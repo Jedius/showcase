@@ -1,0 +1,12 @@
+!!! 5
+html
+  head
+    link(rel='stylesheet', href='libs/css/docco.css')
+    include includes/head
+  body
+    include includes/toppanel
+    .container
+      .docco
+        each doc in docs
+          if doc.length > 0
+              p!= doc
