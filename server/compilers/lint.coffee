@@ -34,7 +34,7 @@ module.exports = class Lint
     @getFiles 'js',(files)=>
       if files[0]
         errors = ''
-        options = ['--color','--node','true','--predef','describe']
+        options = ['--indent','2','--color','--node','true','--predef','describe']
         for file in files
           options.push file
         proc = @spawn @jslint, options,
