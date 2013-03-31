@@ -3,18 +3,21 @@ module.exports = class Server
   #node modules
   http: require 'http'
   express: require 'express'
+  spawn: require('child_process').spawn
 
   #app modules
   globals: require './globals'
   config: require './config'
 
   constructor: (options) ->
+    @options = options
     global.glob = @globals
     glob.server = @
+    glob.options = @options
     @router = new (require './router')
-    @build = new (require './build')
+    @build = new (require './build')(@options)
 
-    @port = glob.config.server.port
+    @port = @options.port or glob.config.server.port
     @app = @express()
     @app.configure =>
       @app.set 'port', @port
@@ -32,9 +35,21 @@ module.exports = class Server
 
   listen: (cb)->
     @router.init @app, =>
-      @http.createServer(@app).listen @port, =>
+      server = @http.createServer(@app)
+      server.listen @port, =>
         console.log  'server start on port '+@port
         cb() if cb
+
+  startSrcServer: (cb)->
+    console.log @options.path.runner.server
+    if @options.path.runner.server
+      @srcServer = @spawn 'node', [@options.path.runner.server],
+        stdio: 'inherit'
+        stderr: 'inherit'
+      process.on 'SIGTERM', =>
+        @srcServer.kill()
+        process.exit()
+    cb() if cb
 
   show_lint_errors: (cb)->
     if @lint_errors
@@ -60,7 +75,8 @@ module.exports = class Server
   start: (cb)->
     @build.compile (err)=>
       @listen (err)=>
-        @build.report (err)=>
-          @build.spec (err)=>
-            @show_lint_errors (err)=>
-              cb() if cb
+        #@build.report (err)=>
+          #@build.spec (err)=>
+        @show_lint_errors (err)=>
+          @startSrcServer (err)=>
+            cb() if cb

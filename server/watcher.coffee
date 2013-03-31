@@ -17,13 +17,20 @@ module.exports = class Watcher
   timeout: 50
 
   constructor: (options)->
-    @dirs = @config.watch.dirs
-    @files = @config.watch.files
+    @options = options
+    @dirs = []
+    for dir in @config.watch.dirs
+      @dirs.push dir
+    for dir in @options.watch.dirs
+      @dirs.push dir
+    @files = options.watch.files
+    @env = process.env
+    @env.options = JSON.stringify(@options)
 
     for file in @files
-      @result.push file
+      @watch file
 
-    @utils.getDirs @config.watch.dirs, (files)=>
+    @utils.getDirs @dirs, (files)=>
       for file in files
         @watch file
       @start()
@@ -59,3 +66,4 @@ module.exports = class Watcher
     @process = @spawn 'node', [@config.path.runners.start],
       stdio: 'inherit'
       stderr: 'inherit'
+      env: @env
