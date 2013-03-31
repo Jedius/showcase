@@ -28,7 +28,7 @@ module.exports = class Watcher
     @env.options = JSON.stringify(@options)
 
     for file in @files
-      @result.push file
+      @watch file
 
     @utils.getDirs @dirs, (files)=>
       for file in files
