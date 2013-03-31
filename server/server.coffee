@@ -35,15 +35,20 @@ module.exports = class Server
 
   listen: (cb)->
     @router.init @app, =>
-      @http.createServer(@app).listen @port, =>
+      server = @http.createServer(@app)
+      server.listen @port, =>
         console.log  'server start on port '+@port
         cb() if cb
 
   startSrcServer: (cb)->
+    console.log @options.path.runner.server
     if @options.path.runner.server
       @srcServer = @spawn 'node', [@options.path.runner.server],
         stdio: 'inherit'
         stderr: 'inherit'
+      process.on 'SIGTERM', =>
+        @srcServer.kill()
+        process.exit()
     cb() if cb
 
   show_lint_errors: (cb)->

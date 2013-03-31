@@ -24,14 +24,18 @@ module.exports = class Router
     app.get '/coverage', @coverage
     app.get '/styleguide', @styleguide
     app.get '/performance', @performance
-    app.get "/js/#{glob.config.name}.js", @get_dist_js
-    app.get "/css/#{glob.config.name}.css", @get_dist_css
-    @fs.readFile @path.dist.js, (err,js)=>
-      @dist.js = js.toString()
-      cb() if @dist.css and cb
-    @fs.readFile @path.dist.css, (err,css)=>
-      @dist.css = css.toString()
-      cb() if @dist.js and cb
+
+    if glob.options.type is 'lib'
+      app.get "/js/#{glob.config.name}.js", @get_dist_js
+      app.get "/css/#{glob.config.name}.css", @get_dist_css
+      @fs.readFile @path.dist.js, (err,js)=>
+        @dist.js = js.toString()
+        cb() if @dist.css and cb
+      @fs.readFile @path.dist.css, (err,css)=>
+        @dist.css = css.toString()
+        cb() if @dist.js and cb
+    else
+      cb() if cb
 
   root: (req,res)=>
     res.render 'index'

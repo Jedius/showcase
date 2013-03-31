@@ -2,22 +2,23 @@ module.exports = class Lint
 
   fs: require 'fs'
   coffeelint: require 'coffeelint'
-  jslint: require 'jslint'
+  spawn: require('child_process').spawn
+  jslint: glob.config.bin.jslint
   utils: new (require '../utils')
 
-  getFiles: (cb)->
+  getFiles: (extension,cb)->
     files = []
     if glob.config.lint? and glob.config.lint[0]
-      @utils.getDirs glob.config.lint, (_files)=>
+      @utils.getDirs glob.options.watch.dirs, (_files)=>
         for file in _files
-          if file.substr(-7) is '.coffee'
+          if file.substr(-extension.length) is extension
             files.push file
         cb files if cb
     else
       cb files if cb
 
   compile: (cb)=>
-    @getFiles (files)=>
+    @getFiles 'coffee',(files)=>
       if files[0]
         errors = {}
         for file in files
@@ -30,15 +31,17 @@ module.exports = class Lint
         cb() if cb
 
   js: (cb)=>
-    @getFiles (files)=>
+    @getFiles 'js',(files)=>
       if files[0]
-        errors = {}
+        errors = ''
+        options = ['--color','--node','true','--predef','describe']
         for file in files
-          content = @fs.readFileSync file, 'utf-8'
-          path = file.split(glob.config.root)[1].substring(1)
-          errors[path] = @jslint.lint content
-        glob.server.lint_errors = errors
-        cb() if cb
+          options.push file
+        proc = @spawn @jslint, options,
+          stdio: 'inherit'
+          stderr: 'inherit'
+        proc.on 'exit', =>
+          #glob.server.lint_errors = errors
+          cb() if cb
       else
         cb() if cb
-

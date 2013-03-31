@@ -18,7 +18,11 @@ module.exports = class Watcher
 
   constructor: (options)->
     @options = options
-    @dirs = options.watch.dirs
+    @dirs = []
+    for dir in @config.watch.dirs
+      @dirs.push dir
+    for dir in @options.watch.dirs
+      @dirs.push dir
     @files = options.watch.files
     @env = process.env
     @env.options = JSON.stringify(@options)
@@ -26,7 +30,7 @@ module.exports = class Watcher
     for file in @files
       @result.push file
 
-    @utils.getDirs @config.watch.dirs, (files)=>
+    @utils.getDirs @dirs, (files)=>
       for file in files
         @watch file
       @start()

@@ -1,32 +1,41 @@
 {
-    "name": "Showcase",
-    "version": "0.0.9",
-    "private": true,
-    "scripts": {
-        "test": "node server/runners/test.js",
-        "start": "node server/runners/watch.js"
-    },
-    "engines": {
-        "node": "0.8.14",
-        "npm": "1.1.x"
-    },
-    "dependencies": {
-        "express": "3.0.6",
-        "jade": "",
-        "coffee-script": "1.4.0",
-        "node-sass": "",
-        "kss": "",
-        "mocha": "",
-        "request": "2.14.0",
-        "coffeelint": "",
-        "jslint": "",
-        "coffeestand": "",
-        "zombie":"",
-        "chai":"",
-        "jscoverage": "",
-        "async": "",
-        "commander": ">= 0.5.2",
-        "marked": ">= 0.2.7",
-        "underscore": ">= 1.0.0"
-    }
+  "name": "Showcase",
+  "version": "0.0.9",
+  "private": true,
+  "scripts": {
+    "test": "node server/runners/test.js",
+    "start": "node server/runners/watch.js"
+  },
+  "engines": {
+    "node": "0.8.14",
+    "npm": "1.1.x"
+  },
+  "dependencies": {
+    "express": "3.0.6",
+    "jade": "",
+    "coffee-script": "1.4.0",
+    "node-sass": "",
+    "kss": "",
+    "mocha": "",
+    "request": "2.14.0",
+    "coffeelint": "",
+    "jslint": "",
+    "coffeestand": "",
+    "zombie": "",
+    "chai": "",
+    "jscoverage": "",
+    "async": "",
+    "commander": ">= 0.5.2",
+    "marked": ">= 0.2.7",
+    "underscore": ">= 1.0.0"
+  },
+  "readme": "# Showcase\n\nCommon showcase for libraries\n\n## The five-minute setup.\n\nCheck your system for local requirements (run until it passes!):\n\n    script/bootstrap\n\nRun tests to ensure that all pass:\n\n    npm test\n\nRun the project locally (with tests and watcher):\n\n    npm start\n\nThen navigate to the [showcase](http://localhost:5000).\n",
+  "readmeFilename": "README.md",
+  "_id": "Showcase@0.0.9",
+  "description": "Common showcase for libraries",
+  "dist": {
+    "shasum": "17844c91fa9651f71ea08f6727050dcea11eba3e"
+  },
+  "_from": "https://github.com/Jedius/showcase/archive/dev.tar.gz",
+  "_resolved": "https://github.com/Jedius/showcase/archive/dev.tar.gz"
 }

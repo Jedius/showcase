@@ -93,3 +93,4 @@ config.bin =
   coffee: "#{root}/node_modules/coffee-script/bin/coffee"
   #docco: "#{root}/libs/docco/bin/docco"
   docco: "#{root}/server/libs/docco/bin/docco"
+  jslint: "#{root}/node_modules/jslint/bin/jslint.js"
