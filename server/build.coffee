@@ -14,23 +14,33 @@ module.exports = class Build
   parallel: require('async').parallel
 
   constructor: (options) ->
+    @options = options
     try
       @fs.mkdirSync glob.config.path.temp
       @fs.mkdirSync glob.config.path.dist
-    @functions =
-      compilers: [
-        @coffee.compile_src
-        @coffee.compile_examples
-        @coffee.compile_tests
-        @lint.compile
-        @css.compile_src
-        @docco.compile
-      ]
-      report: [
-        @jscover
-        @test_reports
-      ]
-
+    if @options.type is 'server'
+      if @options.coffee is true
+      else
+        @functions =
+          compilers: [
+            @lint.js
+          ]
+          report: [
+          ]
+    else
+      @functions =
+        compilers: [
+          @coffee.compile_src
+          @coffee.compile_examples
+          @coffee.compile_tests
+          @lint.compile
+          @css.compile_src
+          @docco.compile
+        ]
+        report: [
+          @jscover
+          @test_reports
+        ]
 
   compile: (cb)->
     @parallel @functions.compilers, =>

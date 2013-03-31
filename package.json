@@ -19,6 +19,7 @@
         "mocha": "",
         "request": "2.14.0",
         "coffeelint": "",
+        "jslint": "",
         "coffeestand": "",
         "zombie":"",
         "chai":"",

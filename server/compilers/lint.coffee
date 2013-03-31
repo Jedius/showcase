@@ -2,6 +2,7 @@ module.exports = class Lint
 
   fs: require 'fs'
   coffeelint: require 'coffeelint'
+  jslint: require 'jslint'
   utils: new (require '../utils')
 
   getFiles: (cb)->
@@ -27,3 +28,17 @@ module.exports = class Lint
         cb() if cb
       else
         cb() if cb
+
+  js: (cb)=>
+    @getFiles (files)=>
+      if files[0]
+        errors = {}
+        for file in files
+          content = @fs.readFileSync file, 'utf-8'
+          path = file.split(glob.config.root)[1].substring(1)
+          errors[path] = @jslint.lint content
+        glob.server.lint_errors = errors
+        cb() if cb
+      else
+        cb() if cb
+
